@@ -37,10 +37,11 @@ public class BookService implements IBookService {
     }
 
     @Override
+    @Cacheable
     public Book update(UUID id, BookIDTO dto) {
         Optional<Book> book = iBookStorage.findById(id);
         Book updatedBook;
-        if (!book.isPresent()){
+        if (!book.isPresent()) {
             throw new EntityNotFoundException("This book doesn't exist");
         } else updatedBook = iBookStorage.save(
                 BookBuilder.create()
@@ -54,7 +55,6 @@ public class BookService implements IBookService {
     }
 
     @Override
-    @Cacheable
     public void delete(UUID uuid) {
         iBookStorage.deleteById((iBookStorage.findById(uuid).get().getId()));
     }

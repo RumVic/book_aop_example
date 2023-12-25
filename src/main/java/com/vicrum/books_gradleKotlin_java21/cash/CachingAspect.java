@@ -17,11 +17,11 @@ public class CachingAspect {
         Method method = getMethod(joinPoint);
         Object[] args = joinPoint.getArgs();
 
-        String cacheKey = cacheManager.generateCacheKey(method, args);
+        String cacheKey = cacheManager.generateCacheKey(args[0].toString());
         Object cachedResult = cacheManager.getFromCache(cacheKey);
 
         if (cachedResult != null) {
-            System.out.println("Cache hit! Returning cached result for key: " + cacheKey);
+            System.out.println("Cache exists! Result for key: " + cacheKey);
             return cachedResult;
         } else {
             System.out.println("Cache miss! Proceeding with method execution for key: " + cacheKey);

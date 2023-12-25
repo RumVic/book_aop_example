@@ -1,6 +1,7 @@
-package com.vicrum.books_gradleKotlin_java21.logging;
+package com.vicrum.books_gradleKotlin_java21.app_config;
 
 import com.vicrum.books_gradleKotlin_java21.cash.CachingAspect;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @EnableAspectJAutoProxy
-public class AppAOPConfig {
+public class AppConfig {
     @Bean
     public Logger logger() {
         return   LoggerFactory.getLogger(this.getClass());
@@ -17,5 +18,9 @@ public class AppAOPConfig {
     @Bean
     public CachingAspect cachingAspect() {
         return new CachingAspect();
+    }
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }

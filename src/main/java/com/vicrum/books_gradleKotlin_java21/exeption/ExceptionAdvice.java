@@ -12,14 +12,15 @@ import java.util.NoSuchElementException;
 public class ExceptionAdvice {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<SingleErrorResponse> processingException (EntityNotFoundException e) {
+    public ResponseEntity<SingleErrorResponse> processingException(EntityNotFoundException e) {
         SingleErrorResponse response = new SingleErrorResponse();
         response.setLogref("error");
         response.setMessage(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<SingleErrorResponse> processingException (NoSuchElementException e) {
+    public ResponseEntity<SingleErrorResponse> processingException(NoSuchElementException e) {
         SingleErrorResponse response = new SingleErrorResponse();
         response.setLogref("error");
         response.setMessage(e.getMessage());

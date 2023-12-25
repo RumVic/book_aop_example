@@ -37,17 +37,18 @@ public class BookController {
     }
 
     @PostMapping()
-    public ResponseEntity<BookODTO> post( @RequestBody @Valid BookIDTO bookIDTO) {
-        return new ResponseEntity<>(iBookMapper.entityToDTO(iBookService.create(bookIDTO)), HttpStatus.OK) ;
+    public ResponseEntity<BookODTO> post(@RequestBody @Valid BookIDTO bookIDTO) {
+        return new ResponseEntity<>(iBookMapper.entityToDTO(iBookService.create(bookIDTO)), HttpStatus.OK);
     }
+
     @PutMapping()
-    public ResponseEntity<BookODTO> update(@RequestBody @Valid BookIDTO bookIDTO,@RequestParam UUID id) {
-        return new ResponseEntity<>(iBookMapper.entityToDTO(iBookService.update(id,bookIDTO)),HttpStatus.OK);
+    public ResponseEntity<BookODTO> update(@RequestBody @Valid BookIDTO bookIDTO, @RequestParam UUID id) {
+        return new ResponseEntity<>(iBookMapper.entityToDTO(iBookService.update(id, bookIDTO)), HttpStatus.OK);
     }
 
     @DeleteMapping()
-    public ResponseEntity<String> delete(@RequestParam UUID uuid){
+    public ResponseEntity<String> delete(@RequestParam UUID uuid) {
         iBookService.delete(uuid);
-        return new ResponseEntity<>("Book deleted successfully",HttpStatus.OK );
+        return new ResponseEntity<>("Book deleted successfully", HttpStatus.OK);
     }
 }

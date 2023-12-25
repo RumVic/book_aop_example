@@ -1,8 +1,12 @@
 package com.vicrum.books_gradleKotlin_java21.logging;
 
+import com.vicrum.books_gradleKotlin_java21.app_config.AppConfig;
 import com.vicrum.books_gradleKotlin_java21.entity.Book;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -13,10 +17,10 @@ import java.util.stream.Collectors;
 @Component
 public class BookAspect {
 
-    private final AppAOPConfig appAOPConfig;
+    private final AppConfig appConfig;
 
-    public BookAspect(AppAOPConfig appAOPConfig) {
-        this.appAOPConfig = appAOPConfig;
+    public BookAspect(AppConfig appConfig) {
+        this.appConfig = appConfig;
     }
 
     @Pointcut("execution(public * com.vicrum.books_gradleKotlin_java21.service.BookService.*(..))")
@@ -28,7 +32,7 @@ public class BookAspect {
         String args = Arrays.stream(jp.getArgs())
                 .map(a -> a.toString())
                 .collect(Collectors.joining(","));
-        appAOPConfig.logger().info("before " + jp.toString() + ", args=[" + args + "]");
+        appConfig.logger().info("before " + jp.toString() + ", args=[" + args + "]");
     }
 
     @AfterReturning(pointcut = "execution(public * com.vicrum.books_gradleKotlin_java21.service.BookService.*(..))", returning = "result")

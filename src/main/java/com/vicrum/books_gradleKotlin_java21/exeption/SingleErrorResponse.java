@@ -7,6 +7,7 @@ public class SingleErrorResponse {
     public String getLogref() {
         return logref;
     }
+
     public void setLogref(String logref) {
         this.logref = logref;
     }
@@ -14,6 +15,7 @@ public class SingleErrorResponse {
     public String getMessage() {
         return message;
     }
+
     public void setMessage(String message) {
         this.message = message;
     }

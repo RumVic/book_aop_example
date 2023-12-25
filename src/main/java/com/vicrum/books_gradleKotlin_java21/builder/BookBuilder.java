@@ -1,7 +1,6 @@
 package com.vicrum.books_gradleKotlin_java21.builder;
 
 import com.vicrum.books_gradleKotlin_java21.entity.Book;
-
 import java.util.UUID;
 
     public class BookBuilder {
