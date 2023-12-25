@@ -10,6 +10,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "books", schema = "book")
 public class Book {
+    public Book() {
+    }
+
     public Book(UUID id, String name, String author, String description) {
         this.id = id;
         this.name = name;

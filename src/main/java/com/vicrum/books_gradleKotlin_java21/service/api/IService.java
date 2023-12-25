@@ -7,5 +7,5 @@ public interface IService<ENTITY,IDTO,ODTO> {
     ENTITY create (IDTO dto);
     List<ENTITY> read ();
     ENTITY update(UUID id, IDTO dto);
-    void delete(IDTO dto);
+    void delete(UUID uuid);
 }

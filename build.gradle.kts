@@ -23,6 +23,16 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
 	implementation("org.modelmapper:modelmapper:2.1.1")
+	// https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api
+	implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+	// https://mvnrepository.com/artifact/org.springframework/spring-aop
+	implementation("org.springframework:spring-aop:6.1.2")
+	// https://mvnrepository.com/artifact/org.aspectj/aspectjrt
+	runtimeOnly("org.aspectj:aspectjrt:1.9.21")
+
+
+
+
 
 }
 
