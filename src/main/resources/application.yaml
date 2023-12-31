@@ -1,0 +1,21 @@
+# application.yml
+# jpa data
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/books
+    username: postgres
+    password: postgres
+    driver: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        default_schema: books_schema
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+# liquibase.properties
+liquibase:
+  change-log: classpath:/db/changelog/db.changelog-master.yaml
+  contexts: development, production
+  default-schema: book
