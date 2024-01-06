@@ -8,4 +8,5 @@ public interface Service<ENTITY,IDTO,ODTO> {
     List<ENTITY> read ();
     ENTITY update(UUID id, IDTO dto);
     void delete(UUID uuid);
+    ENTITY readById(UUID id);
 }

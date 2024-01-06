@@ -1,14 +1,21 @@
 package com.vicrum.books.gradleGroovy.java21.entity;
 
 
+import jakarta.persistence.Cacheable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "books", schema = "book")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Book {
     public Book() {
     }

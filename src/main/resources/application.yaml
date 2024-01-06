@@ -1,5 +1,4 @@
 # application.yml
-# jpa data
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/books
@@ -9,13 +8,30 @@ spring:
   jpa:
     properties:
       hibernate:
-        default_schema: books_schema
-    show-sql: true
-    hibernate:
-      ddl-auto: none
-
+        show_sql: true
+        hbm2ddl.auto: update
+        cache:
+          caches:
+            -name: booksCache
+          use_second_level_cache: true
+          region:
+            factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory
 # liquibase.properties
 liquibase:
   change-log: classpath:/db/changelog/db.changelog-master.yaml
   contexts: development, production
   default-schema: book
+# logging
+logging:
+  level:
+    org:
+      hibernate: debug
+      springframework:
+        cache: debug
+
+
+
+
+
+
+

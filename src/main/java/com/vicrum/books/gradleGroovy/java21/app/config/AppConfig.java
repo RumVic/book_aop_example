@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 @EnableAspectJAutoProxy
 public class AppConfig {
+
+
     @Bean
     public Logger logger() {
         return   LoggerFactory.getLogger(this.getClass());
@@ -23,4 +25,5 @@ public class AppConfig {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
 }
