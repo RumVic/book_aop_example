@@ -1,0 +1,35 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.0'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.vicrum'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-cache:3.2.1'
+	implementation 'org.modelmapper:modelmapper:2.1.1'
+	implementation 'org.liquibase:liquibase-core'
+	implementation 'org.springframework:spring-aop:6.1.2'
+	runtimeOnly 'org.postgresql:postgresql'
+	implementation 'jakarta.validation:jakarta.validation-api:3.1.0-M1'
+	implementation 'com.hazelcast:hazelcast:5.3.6'
+	implementation 'com.hazelcast:hazelcast-hibernate53:5.1.0'
+	//implementation 'org.hibernate:hibernate-core:5.6.15.Final'
+}
+
+tasks.withType(Test) {
+	useJUnitPlatform()
+}
