@@ -1,10 +1,23 @@
 # application.yml
 spring:
+  servlet:
+    multipart:
+      max-file-size: 2000MB
+      max-request-size: 2000MB
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     url: jdbc:postgresql://localhost:5432/books
     username: postgres
     password: postgres
     driver: org.postgresql.Driver
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/books
+      username: mongodb
+      password: mongodb
+      profiles:
+        active: dev
   jpa:
     properties:
       hibernate:
@@ -25,6 +38,7 @@ liquibase:
 logging:
   level:
     org:
+      org.springframework.data.mongodb.core: debug
       hibernate: debug
       springframework:
         cache: debug

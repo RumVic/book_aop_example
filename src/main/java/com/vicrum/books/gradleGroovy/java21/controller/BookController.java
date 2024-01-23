@@ -1,17 +1,15 @@
 package com.vicrum.books.gradleGroovy.java21.controller;
 
 import com.vicrum.books.gradleGroovy.java21.inputdto.BookInputDTO;
+import com.vicrum.books.gradleGroovy.java21.outputdto.BookOutputDTO;
 import com.vicrum.books.gradleGroovy.java21.service.api.BookService;
 import com.vicrum.books.gradleGroovy.java21.service.mapper.BookMapper;
-import com.vicrum.books.gradleGroovy.java21.outputdto.BookOutputDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.io.IOException;
 import java.util.List;
@@ -38,21 +36,9 @@ public class BookController {
         return new ResponseEntity<>(iBookMapper.listEntityTolistDTO(bookService.read()), HttpStatus.OK);
     }
 
-    // Method for testing first level of cache
-    @GetMapping("/id")
-    public ResponseEntity<BookOutputDTO> getBook(@RequestParam UUID id) throws IOException {
-        return new ResponseEntity<>(iBookMapper.entityToDTO(bookService.readById(id)),HttpStatusCode.valueOf(200));
-    }
-
-    // Method for testing Creteria API
-    @GetMapping("/sorting")
-    public ResponseEntity<List<BookOutputDTO>> getSortingBooks() throws IOException {
-        return new ResponseEntity<>(iBookMapper.listEntityTolistDTO(bookService.getSorted()), HttpStatus.OK);
-    }
-
     @PostMapping()
     public ResponseEntity<BookOutputDTO> post(@RequestBody @Valid BookInputDTO bookInputDTO) {
-        return new ResponseEntity<>(iBookMapper.entityToDTO(bookService.create(bookInputDTO)), HttpStatus.OK);
+        return new ResponseEntity<>(iBookMapper.entityToDTO(bookService.create(bookInputDTO)), HttpStatus.CREATED);
     }
 
     @PutMapping()
@@ -63,6 +49,6 @@ public class BookController {
     @DeleteMapping()
     public ResponseEntity<String> delete(@RequestParam UUID uuid) {
         bookService.delete(uuid);
-        return new ResponseEntity<>("Book deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Book deleted successfully", HttpStatus.NO_CONTENT);
     }
 }

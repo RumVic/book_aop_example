@@ -4,14 +4,16 @@ import com.vicrum.books.gradleGroovy.java21.builder.BookBuilder;
 import com.vicrum.books.gradleGroovy.java21.cash.Cacheable;
 import com.vicrum.books.gradleGroovy.java21.entity.Book;
 import com.vicrum.books.gradleGroovy.java21.inputdto.BookInputDTO;
-import com.vicrum.books.gradleGroovy.java21.repository.api.BookStorage;
+import com.vicrum.books.gradleGroovy.java21.repository.api.postgres.BookStorage;
+import com.vicrum.books.gradleGroovy.java21.repository.api.mongo.MongoRepo;
 import com.vicrum.books.gradleGroovy.java21.service.api.BookService;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,22 +30,26 @@ public class BookServiceImplementation implements BookService {
     @PersistenceContext
     private EntityManager entityManager;
     private final BookStorage bookStorage;
+    private final MongoRepo mongoRepo;
 
 
     @Autowired
-    public BookServiceImplementation(EntityManager entityManager, BookStorage bookStorage) {
+    public BookServiceImplementation(EntityManager entityManager, BookStorage bookStorage, MongoRepo mongoRepo) {
         this.entityManager = entityManager;
         this.bookStorage = bookStorage;
+        this.mongoRepo = mongoRepo;
     }
 
     @Override
     public Book create(BookInputDTO dto) {
-        return bookStorage.save(BookBuilder.create()
+        Book book = BookBuilder.create()
                 .setId(UUID.randomUUID())
                 .setAuthor(dto.getAuthor())
                 .setName(dto.getName())
                 .setDescription(dto.getDescription())
-                .buid());
+                .build();
+        mongoRepo.save(book);
+        return bookStorage.save(book);
     }
 
     @Override
@@ -65,7 +71,7 @@ public class BookServiceImplementation implements BookService {
                         .setName(dto.getName())
                         .setAuthor(dto.getAuthor())
                         .setDescription(dto.getDescription())
-                        .buid()
+                        .build()
         );
         return updatedBook;
     }
@@ -77,17 +83,13 @@ public class BookServiceImplementation implements BookService {
 
     public Book readById(UUID id) {
         System.out.println("Fetching book with ID: " + id);
-
         // First request to the database
         Book firstRequest = entityManager.find(Book.class, id);
         System.out.println("First request result: " + firstRequest);
-
         // Second request to the same entity
         Book secondRequest = entityManager.find(Book.class, id);
         System.out.println("Second request result: " + secondRequest);
-
         return firstRequest;
-        //return bookStorage.findById(id).orElseThrow();
     }
 
     @Override

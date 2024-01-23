@@ -9,14 +9,17 @@ public class BookInputDTO {
     private String author;
     private String description;
 
+    private String gridFsImageId;
+
     public BookInputDTO() {
     }
 
-    public BookInputDTO(UUID id, String name, String author, String description) {
+    public BookInputDTO(UUID id, String name, String author, String description, String gridFsImageId) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.description = description;
+        this.gridFsImageId = gridFsImageId;
     }
 
     public UUID getId() {
@@ -33,6 +36,10 @@ public class BookInputDTO {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getGridFsImageId() {
+        return gridFsImageId;
     }
 }
 

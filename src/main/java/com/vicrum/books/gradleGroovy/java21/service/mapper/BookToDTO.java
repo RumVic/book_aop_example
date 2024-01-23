@@ -5,7 +5,6 @@ import com.vicrum.books.gradleGroovy.java21.entity.Book;
 import com.vicrum.books.gradleGroovy.java21.outputdto.BookOutputDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
