@@ -1,1 +1,9 @@
 rootProject.name = "books.gradleKotlin.java21"
+include 'book_service'
+include 'book_audit'
+include 'gateway'
+include 'registry'
+include 'config'
+include 'authentication_service'
+include 'monitoring'
+

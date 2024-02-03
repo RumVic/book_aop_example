@@ -1,0 +1,51 @@
+# application.yml
+spring:
+  servlet:
+    multipart:
+      max-file-size: 2000MB
+      max-request-size: 2000MB
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/books
+    username: postgres
+    password: postgres
+    driver: org.postgresql.Driver
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/books
+      username: mongodb
+      password: mongodb
+      profiles:
+        active: dev
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        hbm2ddl.auto: update
+        cache:
+          caches:
+            -name: booksCache
+          use_second_level_cache: true
+          region:
+            factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory
+# liquibase.properties
+liquibase:
+  change-log: classpath:/db/changelog/db.changelog-master.yaml
+  contexts: development, production
+  default-schema: book
+# logging
+logging:
+  level:
+    org:
+      org.springframework.data.mongodb.core: debug
+      hibernate: debug
+      springframework:
+        cache: debug
+
+
+
+
+
+
+
