@@ -23,12 +23,12 @@ spring:
       hibernate:
         show_sql: true
         hbm2ddl.auto: update
-#        cache:
-#          caches:
-#            -name: booksCache
-#          use_second_level_cache: true
-#          region:
-#            factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory
+        cache:
+          caches:
+            -name: booksCache
+          use_second_level_cache: true
+          region:
+            factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory
 # liquibase.properties
 liquibase:
   change-log: classpath:/db/changelog/db.changelog-master.yaml

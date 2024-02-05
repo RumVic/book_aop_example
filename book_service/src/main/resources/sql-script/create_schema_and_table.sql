@@ -6,7 +6,6 @@ CREATE TABLE book.author (
     date_of_birth DATE,
     date_of_death DATE,
     book_id UUID
---    FOREIGN KEY (book_id) REFERENCES book.books(id)
 );
 
 CREATE TABLE book.gridfs (
@@ -27,8 +26,7 @@ CREATE TABLE book.books (
     name VARCHAR(255),
     author_id UUID,
     grid_fs_image_id UUID,
-    description_id UUID,
-    book_id UUID
+    description_id UUID
 );
 
 ALTER TABLE book.books

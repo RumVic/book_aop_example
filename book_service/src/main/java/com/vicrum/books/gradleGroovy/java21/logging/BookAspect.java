@@ -26,7 +26,7 @@ public class BookAspect {
 //    @Pointcut("execution(public * com.vicrum.books.gradleGroovy.java21.service.BookServiceImplementation.*(..))")
 //    public void callAtMyService() {
 //    }
-//
+
 //    @Before("callAtMyService()")
 //    public void beforeCallAtMethod1(JoinPoint jp) {
 //        String args = Arrays.stream(jp.getArgs())
@@ -34,7 +34,7 @@ public class BookAspect {
 //                .collect(Collectors.joining(","));
 //        appConfig.logger().info("before " + jp.toString() + ", args=[" + args + "]");
 //    }
-
+//
 //    @AfterReturning(pointcut = "execution(public * com.vicrum.books.gradleGroovy.java21.service.BookServiceImplementation.*(..))", returning = "result")
 //    public void afterReturningWithList(JoinPoint joinPoint, List<Book> result) {
 //        String methodName = joinPoint.getSignature().getName();
@@ -51,7 +51,7 @@ public class BookAspect {
 //        System.out.println("After returning from method ");
 //        if (result != null) {
 //            System.out.println("Book ID: " + result.getId() + ", Name: " + result.getName() +
-//                    ", Author: " + result.getAuthor() + ", Description: " + result.getDescription());
+//                    ", Author: " + result.getAuthor().toString() + ", Description: " + result.getDescription().toString() + ", GridFS : " + result.getGridFsImageId().toString());
 //        } else {
 //            System.out.println("No book returned");
 //        }

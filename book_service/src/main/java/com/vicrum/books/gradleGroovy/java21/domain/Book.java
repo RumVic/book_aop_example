@@ -13,8 +13,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "books", schema = "book")
-//@Cacheable
-//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Document(collection = "books")
 @Data
 @Builder
@@ -30,7 +30,6 @@ public class Book {
     @OneToOne(mappedBy = "book")
     @JsonManagedReference
     private GridFs gridFsImageId;
-
     @OneToOne(mappedBy = "book")
     @JsonManagedReference
     private Description description;
