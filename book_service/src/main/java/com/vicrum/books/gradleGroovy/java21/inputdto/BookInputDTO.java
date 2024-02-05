@@ -1,45 +1,27 @@
 package com.vicrum.books.gradleGroovy.java21.inputdto;
 
+import com.vicrum.books.gradleGroovy.java21.domain.Author;
+import com.vicrum.books.gradleGroovy.java21.domain.Description;
+import com.vicrum.books.gradleGroovy.java21.domain.GridFs;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.UUID;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class BookInputDTO {
 
     private UUID id;
     private String name;
-    private String author;
-    private String description;
+    private Author author;
+    private Description description;
+    private GridFs gridFsImageId;
 
-    private String gridFsImageId;
 
-    public BookInputDTO() {
-    }
-
-    public BookInputDTO(UUID id, String name, String author, String description, String gridFsImageId) {
-        this.id = id;
-        this.name = name;
-        this.author = author;
-        this.description = description;
-        this.gridFsImageId = gridFsImageId;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getGridFsImageId() {
-        return gridFsImageId;
-    }
 }
 

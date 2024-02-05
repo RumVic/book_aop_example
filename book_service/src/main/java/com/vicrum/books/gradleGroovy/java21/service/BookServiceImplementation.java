@@ -1,8 +1,7 @@
 package com.vicrum.books.gradleGroovy.java21.service;
 
-import com.vicrum.books.gradleGroovy.java21.builder.BookBuilder;
 import com.vicrum.books.gradleGroovy.java21.cash.Cacheable;
-import com.vicrum.books.gradleGroovy.java21.entity.Book;
+import com.vicrum.books.gradleGroovy.java21.domain.Book;
 import com.vicrum.books.gradleGroovy.java21.inputdto.BookInputDTO;
 import com.vicrum.books.gradleGroovy.java21.repository.api.mongo.MongoRepo;
 import com.vicrum.books.gradleGroovy.java21.repository.api.postgres.BookStorage;
@@ -41,14 +40,16 @@ public class BookServiceImplementation implements BookService {
     }
 
     @Override
+    @Transactional
     public Book create(BookInputDTO dto) {
-        Book book = BookBuilder.create()
-                .setId(UUID.randomUUID())
-                .setAuthor(dto.getAuthor())
-                .setName(dto.getName())
-                .setDescription(dto.getDescription())
+        Book book = Book.builder()
+                .id(dto.getId())
+                .author(dto.getAuthor())
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .gridFsImageId(dto.getGridFsImageId())
                 .build();
-        mongoRepo.save(book);
+       // mongoRepo.save(book);
         return bookStorage.save(book);
     }
 
@@ -66,11 +67,12 @@ public class BookServiceImplementation implements BookService {
         if (!book.isPresent()) {
             throw new EntityNotFoundException("This book doesn't exist");
         } else updatedBook = bookStorage.save(
-                BookBuilder.create()
-                        .setId(id)
-                        .setName(dto.getName())
-                        .setAuthor(dto.getAuthor())
-                        .setDescription(dto.getDescription())
+                Book.builder()
+                        .id(UUID.randomUUID())
+                        .author(dto.getAuthor())
+                        .name(dto.getName())
+                        .description(dto.getDescription())
+                        .gridFsImageId(dto.getGridFsImageId())
                         .build()
         );
         return updatedBook;

@@ -10,5 +10,4 @@ databaseChangeLog:
       author: "vicrum"
       changes:
         - sqlFile:
-           path: "classpath:sql-script/create_some_books.sql"
-
+            path: "classpath:sql-script/create_some_books.sql"

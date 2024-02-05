@@ -1,6 +1,7 @@
 package com.vicrum.books.gradleGroovy.java21.controller;
 
-import com.vicrum.books.gradleGroovy.java21.service.api.BookImageService;
+import com.vicrum.books.gradleGroovy.java21.domain.GridFs;
+import com.vicrum.books.gradleGroovy.java21.service.api.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
@@ -21,26 +22,28 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/image")
 @Controller
-public class ImageBookController {
+public class ImageController {
 
-    private final BookImageService bookImageService;
+    private final ImageService imageService;
 
     @Autowired
-    public ImageBookController(BookImageService bookImageService) {
-        this.bookImageService = bookImageService;
+    public ImageController(ImageService imageService) {
+        this.imageService = imageService;
     }
 
     @PostMapping("{id}")
     public ResponseEntity<String> post(@RequestParam("image") MultipartFile file,
                                        @PathVariable UUID id) throws IOException {
-        String fileId = bookImageService.storeFile(file);
-        bookImageService.setImageToBook(id, fileId);
+        GridFsResource gridFsResource = imageService.storeFile(file);
+        GridFs gridFs = GridFs.builder()
+                .id(UUID.fromString(Objects.requireNonNull(gridFsResource.getFilename()))).build();
+        imageService.setImageToBook(id, gridFs);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<InputStreamResource> downloadBookImage(@PathVariable String id) throws IOException {
-        GridFsResource resource = bookImageService.retrieveFile(id);
+        GridFsResource resource = imageService.retrieveFile(id);
         String filename = URLEncoder.encode(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8).replaceAll("\\+", "%20");
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(resource.getContentType()))
