@@ -23,39 +23,39 @@ public class BookAspect {
         this.appConfig = appConfig;
     }
 
-//    @Pointcut("execution(public * com.vicrum.books.gradleGroovy.java21.service.BookServiceImplementation.*(..))")
-//    public void callAtMyService() {
-//    }
+    @Pointcut("execution(public * com.vicrum.books.gradleGroovy.java21.service.BookServiceImplementation.*(..))")
+    public void callAtMyService() {
+    }
 
-//    @Before("callAtMyService()")
-//    public void beforeCallAtMethod1(JoinPoint jp) {
-//        String args = Arrays.stream(jp.getArgs())
-//                .map(a -> a.toString())
-//                .collect(Collectors.joining(","));
-//        appConfig.logger().info("before " + jp.toString() + ", args=[" + args + "]");
-//    }
-//
-//    @AfterReturning(pointcut = "execution(public * com.vicrum.books.gradleGroovy.java21.service.BookServiceImplementation.*(..))", returning = "result")
-//    public void afterReturningWithList(JoinPoint joinPoint, List<Book> result) {
-//        String methodName = joinPoint.getSignature().getName();
-//        System.out.println("After returning from method ");
-//        for (Book book : result) {
-//            System.out.println("Book ID: " + book.getId() + ", Name: " + book.getName() +
-//                    ", Author: " + book.getAuthor() + ", Description: " + book.getDescription());
-//        }
-//    }
+    @Before("callAtMyService()")
+    public void beforeCallAtMethod1(JoinPoint jp) {
+        String args = Arrays.stream(jp.getArgs())
+                .map(a -> a.toString())
+                .collect(Collectors.joining(","));
+        appConfig.logger().info("before " + jp.toString() + ", args=[" + args + "]");
+    }
 
-//    @AfterReturning(pointcut = "execution(public * com.vicrum.books.gradleGroovy.java21.service.BookServiceImplementation.*(..))", returning = "result")
-//    public void afterReturning(JoinPoint joinPoint, Book result) {
-//        String methodName = joinPoint.getSignature().getName();
-//        System.out.println("After returning from method ");
-//        if (result != null) {
-//            System.out.println("Book ID: " + result.getId() + ", Name: " + result.getName() +
-//                    ", Author: " + result.getAuthor().toString() + ", Description: " + result.getDescription().toString() + ", GridFS : " + result.getGridFsImageId().toString());
-//        } else {
-//            System.out.println("No book returned");
-//        }
-//    }
+    @AfterReturning(pointcut = "execution(public * com.vicrum.books.gradleGroovy.java21.service.BookServiceImplementation.*(..))", returning = "result")
+    public void afterReturningWithList(JoinPoint joinPoint, List<Book> result) {
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println("After returning from method ");
+        for (Book book : result) {
+            System.out.println("Book ID: " + book.getId() + ", Name: " + book.getName() +
+                    ", Author: " + book.getAuthor() + ", Description: " + book.getDescription());
+        }
+    }
+
+    @AfterReturning(pointcut = "execution(public * com.vicrum.books.gradleGroovy.java21.service.BookServiceImplementation.*(..))", returning = "result")
+    public void afterReturning(JoinPoint joinPoint, Book result) {
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println("After returning from method ");
+        if (result != null) {
+            System.out.println("Book ID: " + result.getId() + ", Name: " + result.getName() +
+                    ", Author: " + result.getAuthor().toString() + ", Description: " + result.getDescription().toString() + ", GridFS : " + result.getGridFsImageId().toString());
+        } else {
+            System.out.println("No book returned");
+        }
+    }
 
     @AfterReturning("execution(public * com.vicrum.books.gradleGroovy.java21.service.BookServiceImplementation.delete(..))")
     public void afterReturningVoidMethod(JoinPoint joinPoint) {

@@ -1,8 +1,10 @@
 package com.vicrum.books.gradleGroovy.java21.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
@@ -16,7 +18,7 @@ import java.util.UUID;
 public class Description {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     private String descriptionOfStoryLine;
@@ -25,9 +27,5 @@ public class Description {
 
     private String edition;
 
-    @OneToOne
-    @JoinColumn(name = "book_id")
-    @JsonBackReference
-    private Book book;
 
 }

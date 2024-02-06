@@ -4,8 +4,15 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.4'
 }
 
+
 group 'com.vicrum'
 version '0.0.1-SNAPSHOT'
+
+//dependencyManagement {
+//    imports {
+//        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${parent.ext.springCloudVersion}"
+//    }
+//}
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -30,10 +37,16 @@ dependencies {
     implementation 'org.mongodb:mongo-java-driver:3.12.14'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly 'org.projectlombok:lombok:1.18.30'
-    //
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    //implementation 'org.springframework.cloud:spring-cloud-starter-consul-discovery'
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-consul-discovery
+    implementation 'org.springframework.cloud:spring-cloud-starter-consul-discovery:4.1.0'
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'// healthchech doesn't work without this dep
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0'
+
 }
 
 test {

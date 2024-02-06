@@ -1,8 +1,10 @@
 package com.vicrum.books.gradleGroovy.java21.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,16 +23,13 @@ import java.util.UUID;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String name;
-    @OneToOne(mappedBy = "book")
-    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL)
     private Author author;
-    @OneToOne(mappedBy = "book")
-    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL)
     private GridFs gridFsImageId;
-    @OneToOne(mappedBy = "book")
-    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL)
     private Description description;
 }

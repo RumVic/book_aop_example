@@ -1,6 +1,5 @@
 package com.vicrum.books.gradleGroovy.java21.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,10 +16,8 @@ import java.util.UUID;
 @Table(name = "gridfs", schema = "book")
 public class GridFs {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @OneToOne
-    @JoinColumn(name = "book_id")
-    @JsonBackReference
-    private Book book;
+
+    private String imageId;
 }
