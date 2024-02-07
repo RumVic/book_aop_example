@@ -46,7 +46,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'// healthchech doesn't work without this dep
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0'
-
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-gateway
+    //implementation 'org.springframework.cloud:spring-cloud-starter-gateway:4.1.1'
 }
 
 test {

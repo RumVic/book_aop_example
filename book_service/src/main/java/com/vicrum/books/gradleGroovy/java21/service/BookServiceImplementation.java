@@ -1,6 +1,7 @@
 package com.vicrum.books.gradleGroovy.java21.service;
 
 import com.vicrum.books.gradleGroovy.java21.cash.Cacheable;
+import com.vicrum.books.gradleGroovy.java21.client.AuditClient;
 import com.vicrum.books.gradleGroovy.java21.domain.Book;
 import com.vicrum.books.gradleGroovy.java21.inputdto.BookInputDTO;
 import com.vicrum.books.gradleGroovy.java21.repository.api.mongo.MongoRepo;
@@ -31,12 +32,15 @@ public class BookServiceImplementation implements BookService {
     private final BookStorage bookStorage;
     private final MongoRepo mongoRepo;
 
+    private final AuditClient auditClient;
+
 
     @Autowired
-    public BookServiceImplementation(EntityManager entityManager, BookStorage bookStorage, MongoRepo mongoRepo) {
+    public BookServiceImplementation(EntityManager entityManager, BookStorage bookStorage, MongoRepo mongoRepo, AuditClient auditClient) {
         this.entityManager = entityManager;
         this.bookStorage = bookStorage;
         this.mongoRepo = mongoRepo;
+        this.auditClient = auditClient;
     }
 
     @Override
@@ -50,6 +54,7 @@ public class BookServiceImplementation implements BookService {
                 .gridFsImageId(dto.getGridFsImageId())
                 .build();
        // mongoRepo.save(book);
+        auditClient.storeRecord(book.getName(),book);
         return bookStorage.save(book);
     }
 

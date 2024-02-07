@@ -19,7 +19,7 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.cloud:spring-cloud-starter-consul-discovery:4.1.0'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'// healthchech doesn't work without this dep

@@ -4,22 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
 import java.util.UUID;
 
-@Document(collection = "book_audit")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Audit {
-
+public class Author {
     private UUID id;
-    private String bookName;
-    private UUID bookId;
-    //private UUID userId;
-    //private Enum anEnum;
-
-
+    private String name;
+    private Date dateOfBirth;
+    private Date dateOfDeath;
 }
