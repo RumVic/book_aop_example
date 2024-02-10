@@ -1,0 +1,6 @@
+rootProject.name = 'books.gradleGroovy.java21'
+include 'book_audit'
+include 'book_service'
+include 'config'
+include 'gateway'
+
