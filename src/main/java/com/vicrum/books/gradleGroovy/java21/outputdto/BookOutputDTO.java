@@ -9,14 +9,17 @@ public class BookOutputDTO {
     private String author;
     private String description;
 
+    private String gridFsImageId;
+
     public BookOutputDTO() {
     }
 
-    public BookOutputDTO(UUID id, String name, String author, String description) {
+    public BookOutputDTO(UUID id, String name, String author, String description, String gridFsImageId) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.description = description;
+        this.gridFsImageId = gridFsImageId;
     }
 
     public UUID getId() {
@@ -49,5 +52,13 @@ public class BookOutputDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getGridFsImageId() {
+        return gridFsImageId;
+    }
+
+    public void setGridFsImageId(String gridFsImageId) {
+        this.gridFsImageId = gridFsImageId;
     }
 }

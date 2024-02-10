@@ -1,13 +1,12 @@
 package com.vicrum.books.gradleGroovy.java21.entity;
 
-
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -15,16 +14,18 @@ import java.util.UUID;
 @Entity
 @Table(name = "books", schema = "book")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Document(collection = "books")
 public class Book {
     public Book() {
     }
 
-    public Book(UUID id, String name, String author, String description) {
+    public Book(UUID id, String name, String author, String description,String gridFsImageId) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.description = description;
+        this.gridFsImageId=gridFsImageId;
     }
 
     @Id
@@ -32,6 +33,7 @@ public class Book {
     private String name;
     private String author;
     private String description;
+    private String gridFsImageId;
 
     public UUID getId() {
         return id;
@@ -65,17 +67,24 @@ public class Book {
         this.description = description;
     }
 
+    public String getGridFsImageId() {
+        return gridFsImageId;
+    }
+
+    public void setGridFsImageId(String gridFsImageId) {
+        this.gridFsImageId = gridFsImageId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return id.equals(book.id) && name.equals(book.name) && author.equals(book.author) && description.equals(book.description);
+        if (!(o instanceof Book book)) return false;
+        return getId().equals(book.getId()) && getName().equals(book.getName()) && getAuthor().equals(book.getAuthor()) && getDescription().equals(book.getDescription()) && getGridFsImageId().equals(book.getGridFsImageId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, author, description);
+        return Objects.hash(getId(), getName(), getAuthor(), getDescription(), getGridFsImageId());
     }
 
     @Override
@@ -85,6 +94,7 @@ public class Book {
                 ", name='" + name + '\'' +
                 ", author='" + author + '\'' +
                 ", description='" + description + '\'' +
+                ", gridFsImageId='" + gridFsImageId + '\'' +
                 '}';
     }
 }

@@ -1,4 +1,4 @@
-package com.vicrum.books.gradleGroovy.java21.repository.api;
+package com.vicrum.books.gradleGroovy.java21.repository.api.postgres;
 
 import com.vicrum.books.gradleGroovy.java21.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;

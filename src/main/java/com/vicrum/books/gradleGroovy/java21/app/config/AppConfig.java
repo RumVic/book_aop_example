@@ -6,24 +6,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 @EnableAspectJAutoProxy
 public class AppConfig {
 
-
     @Bean
     public Logger logger() {
-        return   LoggerFactory.getLogger(this.getClass());
+        return LoggerFactory.getLogger(this.getClass());
     }
+
     @Bean
     public CachingAspect cachingAspect() {
         return new CachingAspect();
     }
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
 
 }
