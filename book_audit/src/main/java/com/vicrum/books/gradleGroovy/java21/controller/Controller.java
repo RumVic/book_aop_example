@@ -35,9 +35,9 @@ public class Controller {
     @CircuitBreaker(name = "book-service-creation", fallbackMethod = "interceptBookCreation")
     @RequestMapping(value = "/creation/{bookName}", method = RequestMethod.POST)
     public ResponseEntity<String> saveCreateRecord(@PathVariable String bookName, @RequestParam RecordAction action, @RequestBody InputAuditDto inputAuditDto) {
-        int a = 0;
-        int b = 1;
-        int c = b/a;
+//        int a = 0;
+//        int b = 1;
+//        int c = b/a; - For testing how circuit breaker works
         serviceAudit.create(inputAuditDto,action);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
