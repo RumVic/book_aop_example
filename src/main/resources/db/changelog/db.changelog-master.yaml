@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1"
+      author: "vicrum"
+      changes:
+        - sqlFile:
+           path: "classpath:sql-script/create_schema_and_table.sql"
+  - changeSet:
+      id: "2"
+      author: "vicrum"
+      changes:
+        - sqlFile:
+           path: "classpath:sql-script/create_some_books.sql"
+
