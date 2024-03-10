@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: audit-service # The name of your microservice
+  cloud:
+    config:
+      uri: http://localhost:8888 # URL of the Config Server
+
