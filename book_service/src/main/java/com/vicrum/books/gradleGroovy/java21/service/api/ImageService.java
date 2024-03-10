@@ -13,6 +13,5 @@ public interface ImageService {
 
     void setImageToBook(UUID uuid, GridFs imageId);
 
-    //TODO
     GridFsResource retrieveFile(String id);
 }

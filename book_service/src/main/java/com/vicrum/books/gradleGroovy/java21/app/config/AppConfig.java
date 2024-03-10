@@ -12,9 +12,13 @@ import org.springframework.stereotype.Component;
 @EnableAspectJAutoProxy
 public class AppConfig {
 
-    @Bean
+//    @Bean
+//    public Logger logger() {
+//        return LoggerFactory.getLogger(this.getClass());
+//    }
+    @Bean(name = "appLogger")
     public Logger logger() {
-        return LoggerFactory.getLogger(this.getClass());
+        return LoggerFactory.getLogger("AppLogger");
     }
 
     @Bean
@@ -26,6 +30,4 @@ public class AppConfig {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-
-
 }
