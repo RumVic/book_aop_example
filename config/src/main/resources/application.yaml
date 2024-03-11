@@ -9,6 +9,11 @@ spring:
           uri: https://github.com/RumVic/book-config-server
           default-label: master
           clone-on-start: true
+          repos:
+            test:
+              pattern:
+                - '*/test'
+              uri: https://github.com/RumVic/book-config-server-testing
 logging:
   level:
     org.springframework.cloud: DEBUG

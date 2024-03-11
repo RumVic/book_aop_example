@@ -1,0 +1,8 @@
+spring:
+  config:
+    activate:
+      on-profile: "test"
+  cloud:
+    config:
+      uri: http://localhost:8888
+      label: test

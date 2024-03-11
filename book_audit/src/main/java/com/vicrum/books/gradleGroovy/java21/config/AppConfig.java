@@ -5,6 +5,7 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import org.bson.UuidRepresentation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
@@ -12,15 +13,23 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 
+import java.net.URI;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class AppConfig {
+
+    @Value("${spring.data.mongodb.uri}")
+    private String mongoUri;
     @Bean
     public MongoClient mongoClient() {
+        URI uri = URI.create(mongoUri.substring(mongoUri.indexOf("//") + 2));
+        String host = uri.getHost();
+        int port = uri.getPort() != -1 ? uri.getPort() : 27017; // Default port is 27017
         MongoClientSettings settings = MongoClientSettings.builder()
                 .applyToClusterSettings(builder ->
-                        builder.hosts(Arrays.asList(new ServerAddress("localhost", 27017))))
+                        builder.hosts(List.of(new ServerAddress(host,port))))//"mongo", 27017
                 .uuidRepresentation(UuidRepresentation.STANDARD) // Specify the UUID representation here
                 .build();
         return MongoClients.create(settings);

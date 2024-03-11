@@ -1,0 +1,135 @@
+version: "3.5"
+
+services:
+  postgres:
+    container_name: postgres_container_book
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5454:5432"
+    networks:
+      - netbook
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin_container_book
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - netbook
+    restart: unless-stopped
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - netbook
+
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017
+    networks:
+      - netbook
+
+
+  config:
+    image: books_gradlekotlin_java21-config:latest
+    restart: always
+    ports:
+      - 8888:8888
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks:
+      - netbook
+
+  gateway:
+    environment:
+      CONSUL_HOST: consul
+      CONSUL_PORT: 127.0.0.2
+    image: books_gradlekotlin_java21-gateway:latest
+    restart: always
+    ports:
+      - 8585:8585
+    depends_on:
+      - consul
+      - config
+    networks:
+      - netbook
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  book-service:
+    environment:
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      CONSUL_HOST: consul
+      CONSUL_PORT: 127.0.0.3
+    image: books_gradlekotlin_java21-book_service:latest
+    restart: always
+    depends_on:
+      - consul
+      - config
+    networks:
+      - netbook
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  book-audit:
+    environment:
+      CONSUL_HOST: consul
+      CONSUL_PORT: 127.0.0.4
+    image: books_gradlekotlin_java21-book_audit:latest
+    restart: always
+    depends_on:
+      - consul
+      - config
+    networks:
+      - netbook
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  consul:
+    image: consul:1.15.4
+    ports:
+      - 8500:8500
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks:
+      - netbook
+
+networks:
+  netbook:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:

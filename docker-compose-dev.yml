@@ -1,0 +1,22 @@
+version: '3.5'
+services:
+  config:
+    build: config
+    container_name: config
+    ports:
+      - 8888:8888
+  gateway:
+    build: gateway
+    container_name: gateway
+    ports:
+      - 8585:8585
+  book_service:
+    build: book_service
+    container_name: book-service-1
+    ports:
+      - 8787:8787
+  book_audit:
+    build: book_audit
+    container_name: audit
+    ports:
+      - 8686:8686
