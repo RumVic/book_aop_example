@@ -36,13 +36,16 @@ public class BookServiceImplementation implements BookService {
 
     private final AuditClient auditClient;
 
+    private final KafkaServiceProducer kafkaServiceProducer;
+
 
     @Autowired
-    public BookServiceImplementation(EntityManager entityManager, BookStorage bookStorage, MongoRepo mongoRepo, AuditClient auditClient) {
+    public BookServiceImplementation(EntityManager entityManager, BookStorage bookStorage, MongoRepo mongoRepo, AuditClient auditClient, KafkaServiceProducer kafkaServiceProducer) {
         this.entityManager = entityManager;
         this.bookStorage = bookStorage;
         this.mongoRepo = mongoRepo;
         this.auditClient = auditClient;
+        this.kafkaServiceProducer = kafkaServiceProducer;
     }
 
     @Override
@@ -56,6 +59,7 @@ public class BookServiceImplementation implements BookService {
                 .gridFsImageId(dto.getGridFsImageId())
                 .build();
         auditClient.storeCreateRecord(book.getName(), RecordAction.CREATE ,book);
+        kafkaServiceProducer.sendMessage(RecordAction.CREATE.toString());
         return bookStorage.save(book);
     }
 
@@ -66,6 +70,7 @@ public class BookServiceImplementation implements BookService {
         List<String> listOfNames  = listOfBooks.stream()
                 .map(Book::getName).toList();
         auditClient.storeReadRecord(RecordAction.READ,listOfBooks);
+        kafkaServiceProducer.sendMessage(RecordAction.READ.toString());
         return listOfBooks;
     }
 
@@ -87,6 +92,7 @@ public class BookServiceImplementation implements BookService {
                         .build()
         );
         auditClient.storeUpdateRecord(updatedBook.getName(),RecordAction.UPDATE,updatedBook);
+        kafkaServiceProducer.sendMessage(RecordAction.UPDATE.toString());
         return updatedBook;
     }
 
@@ -94,6 +100,7 @@ public class BookServiceImplementation implements BookService {
     public void delete(UUID uuid) {
         Book book = bookStorage.findById(uuid).orElseThrow();
         auditClient.storeDeleteRecord(book.getName(),RecordAction.DELETE,book);
+        kafkaServiceProducer.sendMessage(RecordAction.DELETE.toString());
         bookStorage.deleteById(book.getId());
     }
 
@@ -124,5 +131,6 @@ public class BookServiceImplementation implements BookService {
         return books;
     }
 }
+
 
 

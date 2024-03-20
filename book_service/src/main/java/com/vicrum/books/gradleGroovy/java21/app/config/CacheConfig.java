@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Arrays;
 
 @Configuration
-public class CacheConfig implements CachingConfigurer {//extends CachingConfigurerSupport {
+public class CacheConfig implements CachingConfigurer {
 
     @Bean
     @Override
