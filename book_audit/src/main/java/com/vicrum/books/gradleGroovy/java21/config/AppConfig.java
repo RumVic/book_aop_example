@@ -14,7 +14,6 @@ import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -25,12 +24,12 @@ public class AppConfig {
     @Bean
     public MongoClient mongoClient() {
         URI uri = URI.create(mongoUri.substring(mongoUri.indexOf("//") + 2));
-        String host = uri.getHost();
-        int port = uri.getPort() != -1 ? uri.getPort() : 27017; // Default port is 27017
+        String host = uri.getScheme();
+        int port = uri.getPort() != -1 ? uri.getPort() : 27017;
         MongoClientSettings settings = MongoClientSettings.builder()
                 .applyToClusterSettings(builder ->
-                        builder.hosts(List.of(new ServerAddress(host,port))))//"mongo", 27017
-                .uuidRepresentation(UuidRepresentation.STANDARD) // Specify the UUID representation here
+                        builder.hosts(List.of(new ServerAddress(host,port))))
+                .uuidRepresentation(UuidRepresentation.STANDARD)
                 .build();
         return MongoClients.create(settings);
     }

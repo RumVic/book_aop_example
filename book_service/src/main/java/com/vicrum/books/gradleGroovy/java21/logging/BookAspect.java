@@ -34,7 +34,7 @@ public class BookAspect {
     @Before("callAtMyService()")
     public void beforeCallAtMethod1(JoinPoint jp) {
         String args = Arrays.stream(jp.getArgs())
-                .map(a -> a.toString())
+                .map(Object::toString)
                 .collect(Collectors.joining(","));
         logger.info("before " + jp.toString() + ", args=[" + args + "]");
     }
