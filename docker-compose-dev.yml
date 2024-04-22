@@ -12,11 +12,11 @@ services:
       - 8585:8585
   book_service:
     build: book_service
-    container_name: book-service-1
+    container_name: book-service
     ports:
       - 8787:8787
   book_audit:
     build: book_audit
-    container_name: audit
+    container_name: audit-service
     ports:
       - 8686:8686

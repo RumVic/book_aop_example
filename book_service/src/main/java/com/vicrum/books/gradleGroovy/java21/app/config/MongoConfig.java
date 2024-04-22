@@ -1,5 +1,7 @@
 package com.vicrum.books.gradleGroovy.java21.app.config;
 
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,16 +12,25 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 
+import java.net.URI;
+import java.util.List;
+
 @Configuration
 public class MongoConfig {
 
-    @Value("${spring.data.mongodb.uri}")
-    //@Value("${custom.mongodb.uri}")
-    private String mongoUri;
 
+    @Value("${spring.data.mongodb.uri}")
+    private String mongoUri;
     @Bean
     public MongoClient mongoClient() {
-        return MongoClients.create(mongoUri);//"mongodb://mongo-1:27017"//mongodb://localhost:27017/books
+        URI uri = URI.create(mongoUri.substring(mongoUri.indexOf("//") + 2));
+        String host = uri.getScheme();
+        int port = uri.getPort() != -1 ? uri.getPort() : 27017;
+        MongoClientSettings settings = MongoClientSettings
+                .builder()
+                .applyToClusterSettings(builder -> builder.hosts(List.of(new ServerAddress(host,port))))
+                .build();
+        return MongoClients.create(settings);
     }
 
     @Bean
