@@ -1,5 +1,4 @@
 version: "3.5"
-
 services:
   postgres:
     container_name: postgres_container_book
@@ -33,6 +32,7 @@ services:
 
   mongo:
     image: mongo
+    container_name: mongo
     restart: always
     ports:
       - 27017:27017
@@ -50,9 +50,106 @@ services:
     networks:
       - netbook
 
+  kafka1:
+    image: confluentinc/cp-kafka
+    container_name: kafka1
+    hostname: kafka1
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT'
+      KAFKA_LISTENERS: 'INTERNAL://kafka1:29092,CONTROLLER://kafka1:29093,EXTERNAL://0.0.0.0:9092'
+      KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://kafka1:29092,EXTERNAL://localhost:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'INTERNAL'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:29093'
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      CLUSTER_ID: 'ciWo7IWazngRchmPES6q5A=='
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+    #        KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:29093,2@kafka2:29093,3@kafka3:29093'
+    networks:
+      - netbook
+
+  #  kafka2:
+  #    image: confluentinc/cp-kafka
+  #    container_name: kafka2
+  #    hostname: kafka2
+  #    ports:
+  #      - "9093:9093"
+  #    environment:
+  #      KAFKA_NODE_ID: 2
+  #      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+  #      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT'
+  #      KAFKA_LISTENERS: 'INTERNAL://kafka2:29092,CONTROLLER://kafka2:29093,EXTERNAL://0.0.0.0:9093'
+  #      KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://kafka2:29092,EXTERNAL://localhost:9093'
+  #      KAFKA_INTER_BROKER_LISTENER_NAME: 'INTERNAL'
+  #      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:29093,2@kafka2:29093,3@kafka3:29093'
+  #      KAFKA_PROCESS_ROLES: 'broker,controller'
+  #      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+  #      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+  #      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+  #      CLUSTER_ID: 'ciWo7IWazngRchmPES6q5A=='
+  #      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+  #
+  #  kafka3:
+  #    image: confluentinc/cp-kafka
+  #    container_name: kafka3
+  #    hostname: kafka3
+  #    ports:
+  #      - "9094:9094"
+  #    environment:
+  #      KAFKA_NODE_ID: 3
+  #      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+  #      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT'
+  #      KAFKA_LISTENERS: 'INTERNAL://kafka3:29092,CONTROLLER://kafka3:29093,EXTERNAL://0.0.0.0:9094'
+  #      KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://kafka3:29092,EXTERNAL://localhost:9094'
+  #      KAFKA_INTER_BROKER_LISTENER_NAME: 'INTERNAL'
+  #      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:29093,2@kafka2:29093,3@kafka3:29093'
+  #      KAFKA_PROCESS_ROLES: 'broker,controller'
+  #      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+  #      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+  #      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+  #      CLUSTER_ID: 'ciWo7IWazngRchmPES6q5A=='
+  #      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry
+    container_name: schema-registry
+    hostname: schema-registry
+    ports:
+      - "8082:8082"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka1:29092'
+      SCHEMA_REGISTRY_LISTENERS: 'http://0.0.0.0:8081'
+    depends_on:
+      - kafka1
+    networks:
+      - netbook
+  #      - kafka2
+  #      - kafka3
+  #      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka1:29092,kafka2:29092,kafka3:29092'
+
+
+  kafka-ui:
+    image: obsidiandynamics/kafdrop:latest
+    container_name: kafka-ui
+    ports:
+      - 9000:9000
+    environment:
+      KAFKA_BROKERCONNECT: "kafka1:29092"
+      JVM_OPTS: -Xms32M -Xmx64M
+      SERVER_SERVLET_CONTEXTPATH: "/"
+    networks:
+      - netbook
 
   config:
-    image: books_gradlekotlin_java21-config:latest
+    image: book_aop_example-config:latest
+    container_name: config
     restart: always
     ports:
       - 8888:8888
@@ -66,8 +163,8 @@ services:
   gateway:
     environment:
       CONSUL_HOST: consul
-      CONSUL_PORT: 127.0.0.2
-    image: books_gradlekotlin_java21-gateway:latest
+      CONSUL_PORT: 8585
+    image: book_aop_example-gateway:latest
     restart: always
     ports:
       - 8585:8585
@@ -80,13 +177,16 @@ services:
       options:
         max-size: "10m"
         max-file: "10"
+  #        127.0.0.2
 
   book-service:
     environment:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
       CONSUL_HOST: consul
-      CONSUL_PORT: 127.0.0.3
-    image: books_gradlekotlin_java21-book_service:latest
+      #     CONSUL_PORT: 127.0.0.3
+      CONSUL_PORT: 8585
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/image_books
+    image: book_aop_example-book_service:latest
     restart: always
     depends_on:
       - consul
@@ -102,7 +202,8 @@ services:
     environment:
       CONSUL_HOST: consul
       CONSUL_PORT: 127.0.0.4
-    image: books_gradlekotlin_java21-book_audit:latest
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/books_audit
+    image: book_aop_example-book_audit:latest
     restart: always
     depends_on:
       - consul
@@ -116,6 +217,7 @@ services:
 
   consul:
     image: consul:1.15.4
+    container_name: consul
     ports:
       - 8500:8500
     restart: always
