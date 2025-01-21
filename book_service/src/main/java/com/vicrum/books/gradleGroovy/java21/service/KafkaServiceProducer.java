@@ -11,5 +11,10 @@ public class KafkaServiceProducer {
 
     public void sendMessage(String message) {
         kafkaTemplate.send("BookTopic", message);
+
+    }
+
+    public void sendForStream(String id, String msg){
+        kafkaTemplate.send("BookTopic",id,msg);
     }
 }

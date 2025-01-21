@@ -4,6 +4,7 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,12 @@ import java.util.List;
 @Configuration
 public class MongoConfig {
 
+    private AppConfig appConfig;
+
+    @Autowired
+    public MongoConfig(AppConfig appConfig) {
+        this.appConfig = appConfig;
+    }
 
     @Value("${spring.data.mongodb.uri}")
     private String mongoUri;
@@ -30,6 +37,8 @@ public class MongoConfig {
                 .builder()
                 .applyToClusterSettings(builder -> builder.hosts(List.of(new ServerAddress(host,port))))
                 .build();
+
+        appConfig.logger().info("host : "+ host + "port : " + port);
         return MongoClients.create(settings);
     }
 
