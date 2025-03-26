@@ -19,8 +19,7 @@ public class Audit {
     private String bookName;
     private UUID bookId;
     private RecordAction recordAction;
-    //private UUID userId;
-    //private Enum anEnum;
+
 
 
 }

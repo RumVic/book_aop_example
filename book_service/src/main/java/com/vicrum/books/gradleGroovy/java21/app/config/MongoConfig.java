@@ -37,6 +37,7 @@ public class MongoConfig {
                 .builder()
                 .applyToClusterSettings(builder -> builder.hosts(List.of(new ServerAddress(host,port))))
                 .build();
+
         appConfig.logger().info("host : "+ host + "port : " + port);
         return MongoClients.create(settings);
     }
